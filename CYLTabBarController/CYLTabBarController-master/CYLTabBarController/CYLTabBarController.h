@@ -13,8 +13,11 @@
 #import "UIControl+CYLTabBarControllerExtention.h"
 
 @class CYLTabBarController;
+//加载完成后回调
 typedef void(^CYLViewDidLayoutSubViewsBlock)(CYLTabBarController *tabBarController);
-
+//使用这种外部方法在检测字符串的值是否相等的时候更快.直接使用指针
+//可以直接使用(stringInstance == MyFirstConstant)来比较,
+//而define则使用的是这种.([stringInstance isEqualToString:MyFirstConstant])
 FOUNDATION_EXTERN NSString *const CYLTabBarItemTitle;
 FOUNDATION_EXTERN NSString *const CYLTabBarItemImage;
 FOUNDATION_EXTERN NSString *const CYLTabBarItemSelectedImage;
@@ -37,6 +40,9 @@ FOUNDATION_EXTERN CGFloat CYLTabBarItemWidth;
 
 @property (nonatomic, copy) CYLViewDidLayoutSubViewsBlock viewDidLayoutSubviewsBlock;
 
+/**
+ 这里为何需要声明？
+ */
 - (void)setViewDidLayoutSubViewsBlock:(CYLViewDidLayoutSubViewsBlock)viewDidLayoutSubviewsBlock;
 
 /*!
@@ -58,65 +64,69 @@ FOUNDATION_EXTERN CGFloat CYLTabBarItemWidth;
  * To set both UIBarItem image view attributes in the tabBar,
  * default is UIEdgeInsetsZero.
  */
+//设置图片的内边距
 @property (nonatomic, readonly, assign) UIEdgeInsets imageInsets;
 
 /*! 
  * To set both UIBarItem label text attributes in the tabBar,
  * use the following to tweak the relative position of the label within the tab button (for handling visual centering corrections if needed because of custom text attributes)
  */
+//设置文字的内边距
 @property (nonatomic, readonly, assign) UIOffset titlePositionAdjustment;
-
+//设置内容
 @property (nonatomic, readonly, copy) NSString *context;
-
+//设置控制器和上面的相关属性
 - (instancetype)initWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                   tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes;
-
+//提供的类方法
 + (instancetype)tabBarControllerWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                               tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes;
-
+//增加了图片的内边距和文字的位置偏西属性
 - (instancetype)initWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                   tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes
                             imageInsets:(UIEdgeInsets)imageInsets
                 titlePositionAdjustment:(UIOffset)titlePositionAdjustment;
-
+//同样的类方法
 + (instancetype)tabBarControllerWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                               tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes
                                         imageInsets:(UIEdgeInsets)imageInsets
                             titlePositionAdjustment:(UIOffset)titlePositionAdjustment;
-
+//增加环境,上下文? 不知道干嘛的
 - (instancetype)initWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                   tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes
                             imageInsets:(UIEdgeInsets)imageInsets
                 titlePositionAdjustment:(UIOffset)titlePositionAdjustment
                                 context:(NSString *)context;
-
+//同样的类方法
 + (instancetype)tabBarControllerWithViewControllers:(NSArray<UIViewController *> *)viewControllers
                               tabBarItemsAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes
                                         imageInsets:(UIEdgeInsets)imageInsets
                             titlePositionAdjustment:(UIOffset)titlePositionAdjustment
                                             context:(NSString *)context;
 
-
+//是否可以选中当前的控制器模块
 - (void)updateSelectionStatusIfNeededForTabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController;
-
+//是否隐藏提示数字的背后的分割线
 - (void)hideTabBadgeBackgroundSeparator;
 
 /*!
  * Judge if there is plus button.
  */
+//是否有中间添加按钮
 + (BOOL)havePlusButton;
 
 /*!
  * @attention Include plusButton if exists.
  */
+//所有tabbar的个数
 + (NSUInteger)allItemsInTabBarCount;
-
+//获取总代理
 - (id<UIApplicationDelegate>)appDelegate;
-
+//获取keywindow
 - (UIWindow *)rootWindow;
 
 @end
-
+//添加的分类
 @interface NSObject (CYLTabBarControllerReferenceExtension)
 
 /*!

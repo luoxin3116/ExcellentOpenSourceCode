@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import "UIViewController+CYLTabBarControllerExtention.h"
 
+//常量赋值,title,imageName,selectedImageName
 NSString *const CYLTabBarItemTitle = @"CYLTabBarItemTitle";
 NSString *const CYLTabBarItemImage = @"CYLTabBarItemImage";
 NSString *const CYLTabBarItemSelectedImage = @"CYLTabBarItemSelectedImage";
@@ -23,6 +24,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 
 @interface CYLTabBarController () <UITabBarControllerDelegate>
 
+//监听key
 @property (nonatomic, assign, getter=isObservingTabImageViewDefaultOffset) BOOL observingTabImageViewDefaultOffset;
 
 @end
@@ -35,6 +37,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //iPhone X适配
     if (CYL_IS_IPHONE_X) {
         self.tabBarHeight = 83;
     }
@@ -47,10 +50,11 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     }
 }
 
+//设置view配置完成后的block
 - (void)setViewDidLayoutSubViewsBlock:(CYLViewDidLayoutSubViewsBlock)viewDidLayoutSubviewsBlock {
     _viewDidLayoutSubviewsBlock = viewDidLayoutSubviewsBlock;
 }
-
+//页面布局完毕
 - (void)viewDidLayoutSubviews {
     [self.tabBar layoutSubviews];//Fix issue #93
     UITabBar *tabBar =  self.tabBar;
@@ -64,9 +68,11 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 }
 
 - (void)viewWillLayoutSubviews {
+    //tabbar没有高度直接返回
     if (!(self.tabBarHeight > 0)) {
         return;
     }
+    //一种赋值的写法
     self.tabBar.frame = ({
         CGRect frame = self.tabBar.frame;
         CGFloat tabBarHeight = self.tabBarHeight;
@@ -75,7 +81,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         frame;
     });
 }
-
+//横竖屏切换
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     UIViewController *controller = self.selectedViewController;
     if ([controller isKindOfClass:[UINavigationController class]]) {
@@ -144,6 +150,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     return self;
 }
 
+//设置context实际上就是类名
 - (void)setContext:(NSString *)context {
     if (context && context.length > 0) {
         _context = [context copy];
